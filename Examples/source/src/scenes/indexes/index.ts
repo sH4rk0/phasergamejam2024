@@ -37,7 +37,8 @@ const examples = [
     "example33-lvl5-hello-custom-enemy",
     "example34-lvl5-hello-custom-weapon",
     "example35-lvl6-hello-map-4-direzioni",
-    "example36-lvl6-hello-map-platform"
+    "example36-lvl6-hello-map-platform",
+    "example37-lvl6-virtual-joystick",
 ];
 
 

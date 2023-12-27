@@ -43,7 +43,8 @@ const examples = [
   "example33-lvl5-hello-custom-enemy",
   "example34-lvl5-hello-custom-weapon",
   "example35-lvl6-hello-map-4-direzioni",
-  "example36-lvl6-hello-map-platform"
+  "example36-lvl6-hello-map-platform",
+  "example37-lvl6-virtual-joystick"
 ];
 
 module.exports = {
@@ -89,7 +90,8 @@ module.exports = {
      "example33-lvl5-hello-custom-enemy": "./src/scenes/indexes/" + examples[35] + ".ts",
      "example34-lvl5-hello-custom-weapon": "./src/scenes/indexes/" + examples[36] + ".ts",
      "example35-lvl6-hello-map-4-direzioni": "./src/scenes/indexes/" + examples[37] + ".ts",
-     "example36-lvl6-hello-map-platform": "./src/scenes/indexes/" + examples[38] + ".ts"
+     "example36-lvl6-hello-map-platform": "./src/scenes/indexes/" + examples[38] + ".ts",
+     "example37-lvl6-virtual-joystick": "./src/scenes/indexes/" + examples[39] + ".ts"
     },
   output: {
     path: path.resolve(__dirname, '../public'),
