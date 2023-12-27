@@ -53,6 +53,7 @@ export let GameData: gameData = {
   ],
 
   scripts: [],
+  fonts: [{ key: 'Roboto' }],
 
   bitmapfonts: [],
 };

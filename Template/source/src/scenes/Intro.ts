@@ -1,26 +1,33 @@
-import { GameData } from "../GameData";
-
 export default class Intro extends Phaser.Scene {
+
+  private _image1: Phaser.GameObjects.Image;
+
 
   constructor() {
     super({
       key: "Intro",
     });
 
-  }
 
+  }
 
   preload() {
-    this.cameras.main.setBackgroundColor(GameData.globals.bgColor);
-  }
 
+
+  }
   create() {
 
-    this.add.image(this.game.canvas.width / 2, this.game.canvas.height / 2, "phaser");
+    //setta il background di sfondo a bianco
+    this.cameras.main.setBackgroundColor("#ffffff");
+
+    this._image1 = this.add.image(this.game.canvas.width / 2, this.game.canvas.height / 2, "phaser");
+
   }
 
 
   update(time: number, delta: number): void {
+
+    this._image1.rotation += .01;
 
   }
 

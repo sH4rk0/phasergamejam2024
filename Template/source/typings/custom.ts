@@ -20,7 +20,7 @@ interface gameData {
     loadingBarY: number
   },
 
-  spritesheets: Array<SpritesheetsAsset>,
+  spritesheets?: Array<SpritesheetsAsset>,
   images?: Array<ImageAsset>,
   atlas?: Array<AtlasAsset>,
   sounds?: Array<SoundAsset>,
@@ -29,6 +29,7 @@ interface gameData {
   bitmapfonts?: Array<BitmapfontAsset>,
   scripts?: Array<ScriptAsset>,
   tilemaps?: Array<TileMapsAsset>,
+  fonts?: Array<FontAsset>,
 
 }
 
@@ -57,6 +58,10 @@ interface ScriptAsset {
 interface TileMapsAsset {
   key: string;
   path: string;
+}
+
+interface FontAsset {
+  key: string;
 }
 
 interface SpritesheetsAsset {

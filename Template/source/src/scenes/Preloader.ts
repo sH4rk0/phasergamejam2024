@@ -1,3 +1,4 @@
+//importiamo la classe GameData
 import { GameData } from "../GameData";
 import WebFontFile from '../scenes/webFontFile';
 
@@ -69,6 +70,9 @@ export default class Preloader extends Phaser.Scene {
           duration: 500,
           onComplete: () => {
 
+            //fermiamo la scena corrente
+            this.scene.stop("Preloader");
+            //richiamiamo il metodo start della far partire la scena Intro
             this.scene.start("Intro");
 
           },
@@ -82,8 +86,13 @@ export default class Preloader extends Phaser.Scene {
     //Assets Load
     //--------------------------
 
+
+
     //WEB FONT
-    this.load.addFile(new WebFontFile(this.load, 'Roboto'));
+    if (GameData.fonts != null)
+      GameData.fonts.forEach((element: FontAsset) => {
+        this.load.addFile(new WebFontFile(this.load, element.key));
+      });
 
     //SCRIPT
     if (GameData.scripts != null)
