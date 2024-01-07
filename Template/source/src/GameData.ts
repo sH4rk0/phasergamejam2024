@@ -11,20 +11,35 @@ export let GameData: gameData = {
     image: "logo",
     imageX: 1280 / 2,
     imageY: 800 / 2,
-    loadingText: "Loading...",
+    loadingText: "Caricamento...",
     loadingTextFont: "roboto",
-    loadingTextComplete: "Tap/click to start!!!",
+    loadingTextComplete: "Tappa/clicca per iniziare!!",
     loadingTextY: 700,
     loadingBarColor: 0xff0000,
     loadingBarY: 630,
   },
 
   spritesheets: [
-    // { name: "robo", path: "assets/images/robo.png", width: 30, height: 50, frames: 8 },
+
+    { name: "player", path: "assets/images/player.png", width: 82, height: 70, frames: 50 },
 
   ],
   images: [
+
     { name: "phaser", path: "assets/images/logo-phaser.png" },
+    { name: "freedoom", path: "assets/images/freedoom.png" },
+    { name: "thelucasart", path: "assets/images/thelucasart.png" },
+    { name: "intro-bg", path: "assets/images/intro-bg.jpg" },
+    { name: "bg-1", path: "assets/images/bg/1.png" },
+    { name: "bg-2", path: "assets/images/bg/2.png" },
+    { name: "bg-3", path: "assets/images/bg/3.png" },
+    { name: "bg-4", path: "assets/images/bg/4.png" },
+    { name: "bg-5", path: "assets/images/bg/5.png" },
+    { name: "bg-6", path: "assets/images/bg/6.png" },
+    { name: "bg-7", path: "assets/images/bg/7.png" },
+
+
+
   ],
   atlas: [],
   sounds: [
@@ -53,7 +68,6 @@ export let GameData: gameData = {
   ],
 
   scripts: [],
-  fonts: [{ key: 'Roboto' }],
-
+  fonts: [{ key: 'Nosifer' }, { key: 'Roboto' }, { key: 'Press+Start+2P' }, { key: 'Rubik+Doodle+Shadow' }, { key: 'Rubik+Glitch' }],
   bitmapfonts: [],
 };

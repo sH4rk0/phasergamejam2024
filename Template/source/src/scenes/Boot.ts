@@ -4,6 +4,8 @@ import { GameData } from "../GameData";
 //creiamo la classe Boot che estende Phaser.Scene
 export default class Boot extends Phaser.Scene {
 
+
+  private _text: Phaser.GameObjects.Text;
   //il costruttore richiama il costruttore della classe Phaser.Scene
   //si usa il metodo super per richiamare il costruttore della classe Phaser.Scene
 
@@ -12,24 +14,32 @@ export default class Boot extends Phaser.Scene {
     super({
       key: "Boot",
     });
+
   }
 
   //il metodo init viene chiamato all'inizio della scena
   //in questo caso non esegue nessuna operazione
-  init() { }
+  init() {
+
+  }
+
+
 
   //il metodo preload viene chiamato dopo il metodo init
   //nel metodo preload vengono caricati gli assets che servono per il caricamento della scena successiva
   preload() {
 
+
     //settiamo il colore di sfondo della scena
-    this.cameras.main.setBackgroundColor(GameData.globals.bgColor);
+    this.cameras.main.setBackgroundColor("#ffffff");
     //precarichiamo l'immagine del logo
     this.load.image("logo", "assets/images/phaser.png");
+
   }
 
   //il metodo create viene chiamato dopo il metodo preload
   create() {
+
 
     //fermiamo la scena corrente
     this.scene.stop("Boot");
@@ -38,6 +48,14 @@ export default class Boot extends Phaser.Scene {
     this.scene.start("Preloader");
 
   }
+
+  update(time: number, delta: number): void {
+
+    //this._text.angle += 1;
+
+  }
+
+
 
 
 }
