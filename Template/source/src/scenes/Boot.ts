@@ -22,9 +22,6 @@ export default class Boot extends Phaser.Scene {
   init() {
 
   }
-
-
-
   //il metodo preload viene chiamato dopo il metodo init
   //nel metodo preload vengono caricati gli assets che servono per il caricamento della scena successiva
   preload() {
