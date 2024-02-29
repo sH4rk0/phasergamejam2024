@@ -1,0 +1,1 @@
+tile-extruder -w 32 -h 32 -i tilemap.png -o tilemap-extruded.png

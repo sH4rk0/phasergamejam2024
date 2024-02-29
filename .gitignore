@@ -1,2 +1,10 @@
-Template/source/node_modules/
-Examples/source/node_modules/
+
+# Ignore all node_modules directories
+node_modules/
+```
+
+# Ignore package-lock.json
+package-lock.json
+```
+
+

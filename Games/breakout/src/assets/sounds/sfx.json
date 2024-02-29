@@ -1,0 +1,151 @@
+{
+  "resources": ["../../assets/sounds/sfx.ogg", "../../assets/sounds/sfx.m4a"],
+  "spritemap": {
+
+    "bounce1": {
+      "start": 0.725,
+      "end": 1.830,
+      "loop": false
+    },
+    "bounce2": {
+      "start": 2.393,
+      "end": 3.504,
+      "loop": false
+    },
+    "death1": {
+      "start": 4.000,
+      "end": 5.000,
+      "loop": false
+    },
+     "hit1": {
+      "start": 6.168,
+      "end": 6.656,
+      "loop": false
+    },
+    "hit2": {
+      "start": 8.099,
+      "end": 8.852,
+      "loop": false
+    },
+    "fx1": {
+      "start": 10.356,
+      "end": 10.729,
+      "loop": false
+    },
+     "fx2": {
+      "start": 12.844,
+      "end": 13.644,
+      "loop": false
+    },
+      "fx3": {
+      "start": 14.803,
+      "end": 15.670,
+      "loop": false
+    },
+     "fx4": {
+      "start": 16.599,
+      "end": 17.053,
+      "loop": false
+    },
+     "fx5": {
+      "start": 18.063,
+      "end": 19.994,
+      "loop": false
+    },
+     "fx6": {
+      "start": 20.686,
+      "end": 21.580,
+      "loop": false
+    },
+    "death2": {
+      "start": 22.157,
+      "end": 23.953,
+      "loop": false
+    },
+    "counter": {
+      "start": 24.908,
+      "end": 24.983,
+      "loop": false
+    },
+     "fx7": {
+      "start": 26.928,
+      "end": 28.290,
+      "loop": false
+    },
+     "fx8": {
+      "start": 29.355,
+      "end": 30.554,
+      "loop": false
+    },
+     "intro1": {
+      "start": 32.574,
+      "end": 36.268,
+      "loop": false
+    },
+      "intro2": {
+      "start": 36.959,
+      "end": 39.237,
+      "loop": false
+    },
+      "end": {
+      "start": 40.199,
+      "end": 44.062,
+      "loop": false
+    },
+     "intro3": {
+      "start": 44.507,
+      "end": 51.000,
+      "loop": false
+    },
+    "fx9": {
+      "start": 52.292,
+      "end": 52.935,
+      "loop": false
+    },
+    "fx10": {
+      "start": 54.157,
+      "end": 55.174,
+      "loop": false
+    },
+    "fx11": {
+      "start": 55.547,
+      "end": 55.804,
+      "loop": false
+    },
+     "fx12": {
+      "start": 57.109,
+      "end": 57.314,
+      "loop": false
+    },
+    "fx13": {
+      "start": 59.626,
+      "end": 60.432,
+      "loop": false
+    },
+    "fx14": {
+      "start": 68.848,
+      "end": 69.489,
+      "loop": false
+    },
+    "fx15": {
+      "start": 74.732,
+      "end": 74.848,
+      "loop": false
+    },
+    "fx16": {
+      "start": 74.732,
+      "end": 74.848,
+      "loop": false
+    },
+    "explosion1": {
+      "start": 63.799,
+      "end": 65.523,
+      "loop": false
+    },
+     "explosion2": {
+      "start": 83.360,
+      "end": 84.944,
+      "loop": false
+    }
+  }
+}
