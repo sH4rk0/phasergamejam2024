@@ -38,6 +38,8 @@ export default class Player extends Phaser.GameObjects.Sprite implements IPlayer
         this.setDepth(11);
         this._scene.add.existing(this);
 
+        this._body.setSize(24, 30).setOffset(3, 20);
+
         this._w = this._scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
         this._a = this._scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
         this._s = this._scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);

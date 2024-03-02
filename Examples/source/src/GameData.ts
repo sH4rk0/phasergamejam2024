@@ -27,7 +27,11 @@ export let GameData: gameData = {
     {
       key: "level-1",
       path: "assets/map/level-1.json",
-    }
+    },
+    {
+      key: "level-0-platform",
+      path: "assets/map/level-0-platform.json",
+    },
 
   ],
 
@@ -35,6 +39,14 @@ export let GameData: gameData = {
     {
       name: "tilemap-extruded",
       path: "assets/map/tilemap-extruded.png",
+      width: 32,
+      height: 32,
+      spacing: 2,
+      margin: 1,
+    },
+    {
+      name: "platform-extruded",
+      path: "assets/map/platform-extruded.png",
       width: 32,
       height: 32,
       spacing: 2,
