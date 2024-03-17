@@ -98,11 +98,12 @@ export let GameData: gameData = {
     gameWidth: 1280,
     gameHeight: 800,
     bgColor: "#ffffff",
-    debug: true
+    debug: true,
+    leaderboard: false,
   },
 
   preloader: {
-    bgColor: "ffffff",
+    bgColor: "000000",
     image: "logo",
     imageX: 1280 / 2,
     imageY: 800 / 2,
@@ -116,6 +117,16 @@ export let GameData: gameData = {
 
 
   levels: [
+
+    {
+      title: "Level 1",
+      gameType: gameType.platform,
+      shooter: {
+        map: "level-0-platform",
+      }
+
+    },
+
     {
       title: "Level 1",
       gameType: gameType.breakout,
@@ -218,14 +229,14 @@ export let GameData: gameData = {
     { name: "explosion", path: "assets/images/explosion.png", width: 64, height: 64, frames: 25 },
     {
       name: "robo-player",
-      path: "assets/images/robo.png",
+      path: "assets/images/robo-player.png",
       width: 30,
       height: 50,
       frames: 8
     },
     {
       name: "robo-enemy",
-      path: "assets/images/robo2.png",
+      path: "assets/images/robo-enemy.png",
       width: 30,
       height: 50,
       frames: 8
@@ -249,6 +260,8 @@ export let GameData: gameData = {
     { name: "bg-0", path: "assets/images/bg-0.jpg" },
     { name: "bg-1", path: "assets/images/bg-1.jpg" },
     { name: "bg-2", path: "assets/images/bg-2.jpg" },
+    { name: "platform-bg-2", path: "assets/images/bg-tile-platform.png" },
+    { name: "platform-bg-3", path: "assets/images/bg-tile-platform-2.png" },
     { name: "patter", path: "assets/images/pattern.jpg" },
     { name: "patter-front", path: "assets/images/pattern-front.png" },
     { name: "patter-back", path: "assets/images/pattern-back.png" },

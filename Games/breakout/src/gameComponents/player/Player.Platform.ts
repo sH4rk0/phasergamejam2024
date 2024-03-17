@@ -23,27 +23,19 @@ export default class PlayerPlatform
     private _speed: number = 600;
     private _maxSpeed: number = 350;
 
+    private _canDoubleJump: boolean = true;
 
 
-
-
-    private _fireObject: fireObjects = {
-        frontal: { active: true },
-        side: { active: false },
-        rear: { active: false },
-        missile: { active: false },
-        laser: { active: false },
-    }
-
-    private _orbCircle: Phaser.Geom.Circle;
-    private _orb: BulletOrb;
-    private _orbIsActivated: boolean = false;
 
     constructor(params: playerConfig) {
 
         super(params);
 
         this.initPlayer();
+
+        this._canDoubleJump = true;
+
+
 
 
         if (!this._config.scene.anims.exists("player-idle")) {
@@ -72,19 +64,19 @@ export default class PlayerPlatform
     }
 
     initPlayer(): void {
-        this._body.setCollideWorldBounds(true, 0.1, 0.1);
-        this._body.setMaxVelocity(this._maxSpeed, this._maxSpeed);
-        this._body.setBounce(0, 0);
-        this.setDepth(101).setScale(2);
-        // this._body.setDamping(true);
-        // this._body.setDrag(.01, .01);
-        this._body.setGravityY(1000)
-        this.setOrigin(0.5, 0.5);
-        this._body.setImmovable(true)
+
+        this._body
+            .setMaxVelocity(this._maxSpeed, this._maxSpeed)
+            .setBounce(0, 0)
+            .setCollideWorldBounds(true)
+            .setGravityY(1000)
+            .setImmovable(true)
+
+        this.setDepth(101)
+            .setOrigin(0.5, 0.5);
+
         this._body.enable = false;
         this.scene.add.existing(this);
-
-
 
         switch (this._playerType) {
 
@@ -97,7 +89,7 @@ export default class PlayerPlatform
 
         }
 
-        this._isTouch = this.scene.sys.game.device.input.touch;
+
 
 
     }
@@ -115,7 +107,7 @@ export default class PlayerPlatform
     activate(): void {
 
         this._isActivated = true;
-        this.startFire();
+
     }
 
     deactivate(): void {
@@ -123,16 +115,9 @@ export default class PlayerPlatform
         this._isActivated = false;
     }
 
-    startFire(): void {
+    startFire(): void { }
 
-
-    }
-
-    stopFire(): void {
-
-
-
-    }
+    stopFire(): void { }
 
     activateInvulnerability(): void {
         //console.log("activate invulnerability");
@@ -144,13 +129,9 @@ export default class PlayerPlatform
     }
 
 
-
-
-
-
     handleInput(): void {
 
-        if (this._isTouch) {
+        if (this._isTouchDevice) {
             this.handleMobileInput();
         }
     }
@@ -191,31 +172,43 @@ export default class PlayerPlatform
 
     handleKeyboardInput(): void {
 
+        if (this._body.blocked.down) { this._canDoubleJump = true; }
+
         //if left arrow key is pressed down set velocity with drag acceleration
-        if (this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT).isDown) {
+        if (this._LEFT.isDown) {
             this._body.setVelocityX(-this.getSpeed());
             this.setFlipX(false);
             this.playAnimation("player-run");
         }
 
         //if right arrow key is pressed down set velocity with drag acceleration
-        if (this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT).isDown) {
+        if (this._RIGHT.isDown) {
             this._body.setVelocityX(this.getSpeed());
             this.setFlipX(true);
             this.playAnimation("player-run");
         }
 
-        //if right arrow key is pressed down set velocity with drag acceleration
-        if (this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP).isDown) {
+        //if up arrow key is pressed down then jump
+        if (
+            (this._body.blocked.down && Phaser.Input.Keyboard.JustDown(this._UP))) {
+
             this._body.setVelocityY(-this.getSpeed() * 2);
 
         }
+        // double jump
+        if (!this._body.blocked.down && Phaser.Input.Keyboard.JustDown(this._UP) && this._canDoubleJump) {
+            this._canDoubleJump = false;
+            this._body.setVelocityY(-this.getSpeed() * 2);
+        }
 
-        //if up arrow key is pressed down set velocity with drag acceleration
-        if (!this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT).isDown && !this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT).isDown) {
+
+        //if nothing is pressed stop the player
+        if (!this._LEFT.isDown && !this._RIGHT.isDown) {
             this._body.setVelocityX(0);
             this.playAnimation("player-idle");
         }
+
+
 
 
 
@@ -230,7 +223,7 @@ export default class PlayerPlatform
 
     update(time: number, delta: number): void {
 
-        if (!this._isTouch && this._isActivated) {
+        if (!this._isTouchDevice && this._isActivated) {
             this.handleKeyboardInput();
         }
 

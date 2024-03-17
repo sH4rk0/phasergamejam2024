@@ -4,7 +4,8 @@ interface gameData {
     gameWidth: number,
     gameHeight: number,
     bgColor: string,
-    debug: boolean
+    debug: boolean,
+    leaderboard: boolean,
   },
 
   preloader: {

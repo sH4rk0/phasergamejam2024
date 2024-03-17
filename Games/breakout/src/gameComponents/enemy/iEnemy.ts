@@ -10,5 +10,8 @@ interface IEnemy {
     isIndistructible(): boolean;
     isDestroyed(): boolean;
     hasBonus(): boolean;
+    changeDirection(): void;
+    isBlocked(): Phaser.Types.Physics.Arcade.ArcadeBodyCollision
+    isTouching(): Phaser.Types.Physics.Arcade.ArcadeBodyCollision
 }
 export default IEnemy;

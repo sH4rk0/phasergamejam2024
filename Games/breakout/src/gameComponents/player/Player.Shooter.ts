@@ -118,7 +118,7 @@ export default class PlayerShooter
 
         }
 
-        this._isTouch = this.scene.sys.game.device.input.touch;
+
 
         this.createOrbOrbit();
     }
@@ -345,7 +345,7 @@ export default class PlayerShooter
 
     handleInput(): void {
 
-        if (this._isTouch) {
+        if (this._isTouchDevice) {
             this.handleMobileInput();
         }
     }
@@ -383,22 +383,22 @@ export default class PlayerShooter
     handleKeyboardInput(): void {
 
         //if left arrow key is pressed down set velocity with drag acceleration
-        if (this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT).isDown) {
+        if (this._LEFT.isDown) {
             this._body.setVelocityX(-this.getSpeed());
         }
 
         //if right arrow key is pressed down set velocity with drag acceleration
-        if (this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT).isDown) {
+        if (this._RIGHT.isDown) {
             this._body.setVelocityX(this.getSpeed());
         }
 
         //if up arrow key is pressed down set velocity with drag acceleration
-        if (this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP).isDown) {
+        if (this._UP.isDown) {
             this._body.setVelocityY(-this.getSpeed());
         }
 
         //if down arrow key is pressed down set velocity with drag acceleration
-        if (this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.DOWN).isDown) {
+        if (this._DOWN.isDown) {
             this._body.setVelocityY(this.getSpeed());
         }
 
@@ -418,7 +418,7 @@ export default class PlayerShooter
 
     update(time: number, delta: number): void {
 
-        if (!this._isTouch && this._isActivated) {
+        if (!this._isTouchDevice && this._isActivated) {
             this.handleKeyboardInput();
         }
 

@@ -20,6 +20,7 @@ export default class GamePlayPlatform extends GamePlay implements IGamePlay {
   private _playerGroup: Phaser.GameObjects.Group;
   private _bg1: Phaser.GameObjects.TileSprite;
   private _bg2: Phaser.GameObjects.TileSprite;
+  private _bg3: Phaser.GameObjects.TileSprite;
 
   private _triggerGroup: Phaser.GameObjects.Group;
   private _camera: Phaser.Cameras.Scene2D.Camera;
@@ -76,7 +77,7 @@ export default class GamePlayPlatform extends GamePlay implements IGamePlay {
       }
     });
 
-    this._bg1 = this.add.tileSprite(0, 0, 1280, 800, "bg-tile").setOrigin(0, 0).setScrollFactor(0);
+    this._bg1 = this.add.tileSprite(640, 400, 800, 1280, "bg-tile").setAngle(90).setOrigin(.5).setScrollFactor(0);
 
     this.add.particles(0, 0, 'stars', {
       frame: [0, 1, 2],
@@ -86,7 +87,8 @@ export default class GamePlayPlatform extends GamePlay implements IGamePlay {
       speedX: { min: 100, max: 300 },
     }).setScrollFactor(0);
 
-    this._bg2 = this.add.tileSprite(0, 0, 1280, 800, "bg-tile-2").setOrigin(0, 0).setScrollFactor(0);
+    this._bg3 = this.add.tileSprite(0, 0, 1280, 800, "platform-bg-3").setOrigin(0, 0).setScrollFactor(0);
+    this._bg2 = this.add.tileSprite(0, 0, 1280, 800, "platform-bg-2").setOrigin(0, 0).setScrollFactor(0);
 
 
     this._bonusGroup = this.add.group({ runChildUpdate: true });
@@ -176,7 +178,7 @@ export default class GamePlayPlatform extends GamePlay implements IGamePlay {
     //creo il primo layer che ospiterà le tile del pavimento e delle piattaforme
     //questo layer è solamente visuale e non c'è interazione con nessun game object
     this._layer = this._map
-      .createLayer("world", this._tileset, 16, 0)
+      .createLayer("world", this._tileset, 0, 0)
       .setDepth(1)
       .setAlpha(1);
 
@@ -206,6 +208,16 @@ export default class GamePlayPlatform extends GamePlay implements IGamePlay {
         }
 
       },
+      undefined,
+      this
+    );
+
+    //creo un collider tra PLAYER e Layer2
+    //senza di questo la collisione non verrebbe eseguita
+    this.physics.add.collider(
+      this._enemyGroup,
+      this._layer2,
+      null,
       undefined,
       this
     );
@@ -379,10 +391,21 @@ export default class GamePlayPlatform extends GamePlay implements IGamePlay {
 
 
   enemyCollider(player: any, enemy: any) {
-    let _enemy: Enemy = <Enemy>enemy;
-    this._camera.shake(100, 0.01);
-    this.createExplosion(_enemy.x, _enemy.y);
-    this.events.emit("update-lives");
+
+    if (!this._player.isInvulnerable()) {
+      let _enemy: Enemy = <Enemy>enemy;
+      if (this._player.isTouching().down && _enemy.isTouching().up) {
+
+        _enemy.remove();
+        this.createExplosion(_enemy.x, _enemy.y);
+
+      } else {
+        this._camera.shake(100, 0.01);
+        this.events.emit("update-lives");
+        this._player.setInvulerability(2000);
+      }
+    }
+
   }
 
   addBoss(bossData: any) {
@@ -416,6 +439,11 @@ export default class GamePlayPlatform extends GamePlay implements IGamePlay {
 
 
   update(time: number, delta: number): void {
+
+    //move bg1 according to camera
+    this._bg1.tilePositionY = this._camera.scrollX * -0.05;
+    this._bg3.tilePositionX = this._camera.scrollX * 0.1;
+    this._bg2.tilePositionX = this._camera.scrollX * 0.5;
 
   }
 

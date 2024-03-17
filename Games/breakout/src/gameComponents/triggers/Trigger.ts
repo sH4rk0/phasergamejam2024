@@ -2,6 +2,7 @@ import GamePlay from "../../scenes/GamePlay";
 import BonusShooter from "../bonus/Bonus.Shooter";
 import BonusBasic from "../bonus/Bonus.Shooter";
 import EnemyBasic from "../enemy/Enemy.Basic";
+import EnemyRobot from "../enemy/Enemy.Robot";
 import ITrigger from "./iTrigger";
 
 export default class Trigger
@@ -35,14 +36,22 @@ export default class Trigger
 
     executeTrigger() {
 
+        console.log(this._data.type, this._data.data.type);
+
+
         switch (this._data.type) {
 
             case "enemy":
 
-                console.log(this._data.data);
+                console.log(this._data.data.type);
                 switch (this._data.data.type) {
                     case "basic":
                         this._scene.addToEnemyGroup(new EnemyBasic({ scene: this._scene, x: this.x, y: this.y, key: this._data.data.texture, enemyData: this._data.data }));
+                        break;
+
+                    case "robot":
+                        console.log("robot!!!")
+                        this._scene.addToEnemyGroup(new EnemyRobot({ scene: this._scene, x: this.x, y: this.y, key: this._data.data.texture, enemyData: this._data.data }));
                         break;
 
                 }
@@ -59,9 +68,7 @@ export default class Trigger
 
                 break;
 
-            case "boss":
 
-                break;
 
         }
 

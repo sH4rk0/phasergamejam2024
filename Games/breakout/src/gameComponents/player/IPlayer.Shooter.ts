@@ -21,8 +21,7 @@ interface IPlayerShooter extends IPlayer {
 
     getSpeed(): number;
 
-    activateInvulnerability(): void;
-    deactivateInvulnerability(): void;
+
 
     activateShield(): void;
     deactivateShield(): void;

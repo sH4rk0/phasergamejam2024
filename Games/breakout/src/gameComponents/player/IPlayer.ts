@@ -11,6 +11,13 @@ interface IPlayer {
     handleInput(): void;
     handleMobileInput(): void;
     handleKeyboardInput(): void;
+    isBlocked(): Phaser.Types.Physics.Arcade.ArcadeBodyCollision
+    isTouching(): Phaser.Types.Physics.Arcade.ArcadeBodyCollision
+
+    activateInvulnerability(): void;
+    deactivateInvulnerability(): void;
+    setInvulerability(time: number): void;
+    isInvulnerable(): boolean;
 
 }
 export default IPlayer;

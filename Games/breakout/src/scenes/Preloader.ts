@@ -15,7 +15,7 @@ export default class Preloader extends Phaser.Scene {
   }
 
   preload() {
-    this.cameras.main.setBackgroundColor(GameData.globals.bgColor);
+    this.cameras.main.setBackgroundColor(GameData.preloader.bgColor);
     this._progress = this.add.graphics();
     this.loadAssets();
   }
@@ -70,6 +70,7 @@ export default class Preloader extends Phaser.Scene {
 
       this._progress.clear();
       this._loading.setText(GameData.preloader.loadingTextComplete);
+
 
       this.input.once("pointerdown", () => {
         this.tweens.add({

@@ -1,8 +1,9 @@
 import { GameData } from "../GameData";
+import { Leaderboard } from "./LeaderBoard";
 
 export default class GameOver extends Phaser.Scene {
 
-
+  private _leaderBoard: Leaderboard;
 
   constructor() {
     super({
@@ -11,9 +12,14 @@ export default class GameOver extends Phaser.Scene {
   }
 
 
+
   create() {
+    this._leaderBoard = new Leaderboard(this);
     console.log("GameOver", this.registry.get("score"));
   }
+
+
+  setUpScene() { }
 
 
 

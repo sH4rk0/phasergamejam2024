@@ -53,7 +53,7 @@ export default class PlayerBreakout extends Player implements IPlayerBreakout {
 
     update(time: number, delta: number) {
 
-        if (!this._isTouch && this._isActivated) {
+        if (!this._isTouchDevice && this._isActivated) {
             this.handleKeyboardInput();
         }
 
@@ -66,17 +66,17 @@ export default class PlayerBreakout extends Player implements IPlayerBreakout {
     handleKeyboardInput(): void {
 
         //if left arrow key is pressed down set velocity with drag acceleration
-        if (this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT).isDown) {
+        if (this._LEFT.isDown) {
             this._body.setVelocityX(-this.getSpeed());
-
         }
 
         //if right arrow key is pressed down set velocity with drag acceleration
-        if (this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT).isDown) {
+        if (this._RIGHT.isDown) {
             this._body.setVelocityX(this.getSpeed());
         }
 
-        if (!this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT).isDown && !this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT).isDown) {
+        //if nothing is pressed stop the player
+        if (!this._LEFT.isDown && !this._RIGHT.isDown) {
             this._body.setVelocityX(0);
         }
 

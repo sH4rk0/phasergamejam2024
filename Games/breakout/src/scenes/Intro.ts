@@ -1,5 +1,5 @@
 import CustomPipelineGlitch from "../gameComponents/pipelines/CustomPipelineGlitch";
-
+import { Leaderboard } from "./LeaderBoard";
 
 export default class Intro extends Phaser.Scene {
 
@@ -13,6 +13,9 @@ export default class Intro extends Phaser.Scene {
   private _patternFront: Phaser.GameObjects.TileSprite;
   private _patternBack: Phaser.GameObjects.TileSprite;
   private _counter: number = 0;
+  private _leaderBoard: Leaderboard;
+  private _highScoresTexts: Array<Phaser.GameObjects.Text> = [];
+
 
   constructor() {
     super({
@@ -25,17 +28,32 @@ export default class Intro extends Phaser.Scene {
 
 
   }
-  create() {
 
+
+  create() {
     //setta il background di sfondo a bianco
     this.cameras.main.setBackgroundColor("#000000");
+    this._leaderBoard = new Leaderboard(this);
+    console.log("Intro", this._leaderBoard.isLoaded());
+  }
+
+
+  setUpScene() {
 
     //carica la musica
     this._music = this.sound.add("intro", { loop: true, volume: .1 });
     this._music.play();
 
-    this._patternBack = this.add.tileSprite(0, 0, 1280, 800, "patter-back").setOrigin(0, 0).setAlpha(1);
-    this._patternFront = this.add.tileSprite(0, 0, 1280, 800, "patter-front").setOrigin(0, 0).setAlpha(1);
+    this._patternBack = this.add.tileSprite(0, 0, 1280, 800, "patter-back").setOrigin(0, 0).setAlpha(0);
+    this._patternFront = this.add.tileSprite(0, 0, 1280, 800, "patter-front").setOrigin(0, 0).setAlpha(0);
+
+    this.tweens.add({
+      targets: [this._patternBack, this._patternFront],
+      alpha: 1,
+      delay: this.tweens.stagger(100, {}),
+      duration: 500,
+    });
+
 
     this._audioBtn = this.add.sprite(1280 - 100, 750, "audioBtn", 0).setScale(0.5).setOrigin(0.5, 0.5).setInteractive().on("pointerdown", () => {
 
@@ -118,8 +136,6 @@ export default class Intro extends Phaser.Scene {
   startIntro() {
 
 
-
-
     this._2024 = this.add.text(1280 / 2, 800 / 2, "Phaser Game Jam 0").setOrigin(0.5, 0.5).setColor("#ffffff").setFontSize(40).setFontFamily("'Press Start 2P'").setDepth(1001).setAlpha(0);
 
     let updateTween = this.tweens.addCounter({
@@ -130,6 +146,11 @@ export default class Intro extends Phaser.Scene {
       onUpdate: (tween: Phaser.Tweens.Tween) => {
         const value = Math.round(tween.getValue());
         this._2024.setText(`Phaser Game Jam ${value}`);
+
+
+      },
+      onComplete: () => {
+        this.displayLeaderBoard()
       }
     });
 
@@ -172,10 +193,6 @@ export default class Intro extends Phaser.Scene {
       }).setInteractive();
 
 
-
-
-
-
     this._creditsText = this.add.text(this.game.canvas.width / 2, this.game.canvas.height / 2 + 330, "Credits")
       .setOrigin(0.5, 0)
       .setColor("#ffffff")
@@ -214,21 +231,44 @@ export default class Intro extends Phaser.Scene {
 
   }
 
+  displayLeaderBoard() {
+    let _highScores: Array<any> = this._leaderBoard.getHighScores();
+    this._highScoresTexts = [];
+    _highScores.forEach((score: any, index: number) => {
+      let _text: Phaser.GameObjects.Text = this.add.text(1280 / 2, 800 / 2 + 100 + (index * 50), `${score.name} - ${score.score}`).setOrigin(0.5, 0.5).setColor("#ffffff").setFontSize(20).setFontFamily("roboto").setDepth(1002).setAlpha(0);
+      this._highScoresTexts.push(_text);
+    });
+
+    this.tweens.add({
+      targets: this._highScoresTexts,
+      alpha: 1,
+      duration: 250,
+      delay: this.tweens.stagger(100, {}),
+      onComplete: () => { }
+    });
+
+
+  }
+
 
 
   update(time: number, delta: number): void {
 
+    if (this._leaderBoard.isLoaded()) {
 
+      //aumento il counter
+      this._counter += 0.01;
+      //muovo le tile con moto circolare usanto seno e coseno
+      this._patternBack.tilePositionX += Math.sin(this._counter) * -.25; //moltiplicatore per la velocità;
+      this._patternBack.tilePositionY += Math.cos(this._counter) * -.25; //moltiplicatore per la velocità
 
-    //aumento il counter
-    this._counter += 0.01;
-    //muovo le tile con moto circolare usanto seno e coseno
-    this._patternBack.tilePositionX += Math.sin(this._counter) * -.25; //moltiplicatore per la velocità;
-    this._patternBack.tilePositionY += Math.cos(this._counter) * -.25; //moltiplicatore per la velocità
+      this._patternFront.tilePositionX += Math.sin(this._counter) * .75; //moltiplicatore per la velocità;
+      this._patternFront.tilePositionY += Math.cos(this._counter) * .75; //moltiplicatore per la velocità
 
-    this._patternFront.tilePositionX += Math.sin(this._counter) * .75; //moltiplicatore per la velocità;
-    this._patternFront.tilePositionY += Math.cos(this._counter) * .75; //moltiplicatore per la velocità
+    }
   }
+
+
 
 }
 

@@ -83,7 +83,15 @@ export default class Enemy
 
     hasBonus(): boolean { return this._hasBonus; }
 
+    changeDirection(): void { }
 
+    isBlocked(): Phaser.Types.Physics.Arcade.ArcadeBodyCollision {
+        return this._body.blocked;
+    }
+
+    isTouching(): Phaser.Types.Physics.Arcade.ArcadeBodyCollision {
+        return this._body.touching;
+    }
 
 }
 
