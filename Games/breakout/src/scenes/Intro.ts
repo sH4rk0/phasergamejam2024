@@ -1,4 +1,5 @@
 import CustomPipelineGlitch from "../gameComponents/pipelines/CustomPipelineGlitch";
+import UIPlugin from 'phaser3-rex-plugins/templates/ui/ui-plugin.js';
 import { Leaderboard } from "./LeaderBoard";
 
 export default class Intro extends Phaser.Scene {
@@ -15,26 +16,26 @@ export default class Intro extends Phaser.Scene {
   private _counter: number = 0;
   private _leaderBoard: Leaderboard;
   private _highScoresTexts: Array<Phaser.GameObjects.Text> = [];
-
+  private rexUI: UIPlugin;
+  private _scrollablePanel: UIPlugin.ScrollablePanel;
+  private _notesEmitter: Phaser.GameObjects.Particles.ParticleEmitter;
+  private _audioTween: Phaser.Tweens.Tween;
 
   constructor() {
     super({
       key: "Intro",
     });
-
   }
 
-  preload() {
-
-
-  }
+  preload() { }
 
 
   create() {
     //setta il background di sfondo a bianco
     this.cameras.main.setBackgroundColor("#000000");
+    //quando viene inizializzata (autenticazione + recupero della classifica) la classe leaderBoard richiama la funzione setUpScene
     this._leaderBoard = new Leaderboard(this);
-    console.log("Intro", this._leaderBoard.isLoaded());
+
   }
 
 
@@ -54,49 +55,65 @@ export default class Intro extends Phaser.Scene {
       duration: 500,
     });
 
-
-    this._audioBtn = this.add.sprite(1280 - 100, 750, "audioBtn", 0).setScale(0.5).setOrigin(0.5, 0.5).setInteractive().on("pointerdown", () => {
+    //creo il bottone audio
+    this._audioBtn = this.add.sprite(1280 - 50, 750, "audiobtn", 0).setScale(.5).setOrigin(.5).setInteractive().on("pointerdown", () => {
 
       if (!this._audioIsMuted) {
         this.game.sound.mute = true;
         this._audioIsMuted = true;
+        this._notesEmitter.stop();
+        this._audioTween.pause();
+        this._audioBtn.setAlpha(.75);
 
-        this._audioBtn.setFrame(2);
       } else {
         this.game.sound.mute = false;
         this._audioIsMuted = false;
-        this._audioBtn.setFrame(0);
+        this._notesEmitter.start();
+        this._audioTween.resume();
+        this._audioBtn.setAlpha(1);
+
       }
 
+    }).setDepth(1001);
 
-    }).on("pointerover", () => {
+    //https://labs.phaser.io/edit.html?src=src\fx\barrel\barrel%20squish%20fx.js
+    //deformazione del bottone audio
+    let _barrel: Phaser.FX.Barrel = this._audioBtn.preFX.addBarrel(0.75);
 
-      if (!this._audioIsMuted) {
-        this._audioBtn.setFrame(1);
-      } else {
-        this._audioBtn.setFrame(3);
-      }
+    //creo il tween per la deformazione del bottone audio
+    this._audioTween = this.tweens.add({
+      targets: _barrel,
+      amount: 1.4,
+      yoyo: true,
+      duration: 500,
+      loop: -1,
+      ease: 'sine.inout'
+    });
 
-    }).on("pointerout", () => {
+    //creo l'emitter per le note musicali
+    this._notesEmitter = this.add.particles(this._audioBtn.x, this._audioBtn.y, 'notes', {
+      speed: 40,
+      frame: [0, 1, 2, 3],
+      lifespan: 1200,
+      scale: { start: 3, end: 2 },
+      alpha: { start: 1, end: 0 },
+      gravityY: -200,
+      frequency: 200
 
-      if (!this._audioIsMuted) {
-        this._audioBtn.setFrame(0);
-      } else {
-        this._audioBtn.setFrame(2);
-      }
-    })
-      .setDepth(1001);
+    }).setDepth(1000);
 
     let _logo: Phaser.GameObjects.Image = this.add.image(this.game.canvas.width / 2, this.game.canvas.height / 2 - 250, "arkanoid-logo").setScale(.2).setAlpha(0);
 
+    //Shader per il post pipeline
+    //se non è un dispositivo touch aggiungo il post pipeline
     if (!this.sys.game.device.input.touch) {
-      const renderer = this.game
-        .renderer as Phaser.Renderer.WebGL.WebGLRenderer;
-
+      //aggiungo il post pipeline
+      const renderer = this.game.renderer as Phaser.Renderer.WebGL.WebGLRenderer;
+      //inserisco nel renderer il post pipeline
       renderer.pipelines.addPostPipeline("glitch", CustomPipelineGlitch);
+      //applico il post pipeline all'oggetto
       _logo.setPostPipeline(CustomPipelineGlitch);
-      this._patternBack.setPostPipeline(CustomPipelineGlitch);
-      this._patternFront.setPostPipeline(CustomPipelineGlitch);
+
     }
 
     let _tweenConfig: Phaser.Types.Tweens.TweenBuilderConfig = {
@@ -114,28 +131,52 @@ export default class Intro extends Phaser.Scene {
     this.tweens.add(_tweenConfig)
 
 
-    this._creditsContainer = this.add.container(0, 0).setDepth(1002).setAlpha(0);
-
-    let _layer: Phaser.GameObjects.Image = this.add.image(0, 0, "layer").setOrigin(0, 0)
-      .setInteractive()
-      .on("pointerdown", () => { this.closeCredits(); });
-
-    let _modal: Phaser.GameObjects.Image = this.add.image(1280 / 2, 800 / 2, "modal").setOrigin(0.5)
-    let _creditLabel: Phaser.GameObjects.Text = this.add.text(1280 / 2, 200, "Credits").setOrigin(0.5, 0.5).setColor("#000000").setFontSize(40).setFontFamily("roboto");
-    let _creditDescription: Phaser.GameObjects.Text = this.add.text(260, 230, "Questo videogame è stato implementato come esempio per la Phaser Game Jam 2024. In questa modale troviamo gli autori del gioco.\n\nGame Design: Luca Sartoni\nProgramming: Luca Sartoni\nGraphics: Luca Sartoni\nMusic: Luca Sartoni\nSound Effects: Luca Sartoni\n\n Clicca per chiudere la modale.").setOrigin(0).setColor("#000000").setFontSize(20).setFontFamily("roboto").setWordWrapWidth(700);
-
-    this._creditsContainer.add([_layer, _modal, _creditLabel, _creditDescription]);
+    this._creditsContainer = this.add.container(0, 0).setDepth(1005).setAlpha(0);
 
 
+    this._scrollablePanel = this.rexUI.add.scrollablePanel({
+      x: 690, y: 450,
+      height: 400,
+      width: 700,
+      scrollMode: 'y',
+      background: this.rexUI.add.roundRectangle(0, 0, 2, 2, 10, 0xffffff).setInteractive(),
+      panel: {
+        child: this.createPanel(),
+        mask: { padding: 1, },
+      },
+
+      slider: {
+        track: this.rexUI.add.roundRectangle(0, 0, 5, 0, { radius: 5 }, 0x260e04),
+        thumb: this.rexUI.add.roundRectangle(0, 0, 5, 150, { radius: 5 }, 0x7b5e57),
+      },
+      mouseWheelScroller: {
+        focus: false,
+        speed: 0.1
+      },
+      space: { left: 20, right: 20, top: 20, bottom: 20, panel: 3, header: 5, footer: 5 }
+    }).layout().scrollToBottom().scrollToTop().setDepth(1005)
+
+
+
+    let _layer: Phaser.GameObjects.Image = this.add.image(0, 0, "layer").setInteractive().on("pointerdown", () => { this.closeCredits(); }).setOrigin(0, 0);
+
+    this._creditsContainer.add([_layer, this._scrollablePanel]);
 
   }
 
+  //crea il pannello delle credits
+  //ritorna un container
+  //contenente il testo
+  createPanel() {
+    var text = this.add.text(0, 0, '').setColor("#000000").setText("Questo videogame è stato implementato come esempio per la Phaser Game Jam 2024.\n\nIn questa modale troviamo gli autori del gioco.\n\nGame Design: Mario Rossi\n\nProgramming: Mario Rossi\n\nGraphics: Mario Rossi\n\nMusic: Mario Rossi\n\nSound Effects: Mario Rossi").setFontSize(22).setWordWrapWidth(600).setLineSpacing(8).setFontFamily("'Press Start 2P'")
+    var container = this.add.container()
+      .add(text)
+      .setSize(600, text.height);
 
-
+    return container;
+  }
 
   startIntro() {
-
-
     this._2024 = this.add.text(1280 / 2, 800 / 2, "Phaser Game Jam 0").setOrigin(0.5, 0.5).setColor("#ffffff").setFontSize(40).setFontFamily("'Press Start 2P'").setDepth(1001).setAlpha(0);
 
     let updateTween = this.tweens.addCounter({
@@ -161,10 +202,6 @@ export default class Intro extends Phaser.Scene {
       delay: 0,
       onComplete: () => { }
     });
-
-
-
-
 
 
     this._startGameText = this.add.text(this.game.canvas.width / 2, this.game.canvas.height / 2 + 280, "GIOCA")
@@ -235,7 +272,7 @@ export default class Intro extends Phaser.Scene {
     let _highScores: Array<any> = this._leaderBoard.getHighScores();
     this._highScoresTexts = [];
     _highScores.forEach((score: any, index: number) => {
-      let _text: Phaser.GameObjects.Text = this.add.text(1280 / 2, 800 / 2 + 100 + (index * 50), `${score.name} - ${score.score}`).setOrigin(0.5, 0.5).setColor("#ffffff").setFontSize(20).setFontFamily("roboto").setDepth(1002).setAlpha(0);
+      let _text: Phaser.GameObjects.Text = this.add.text(1280 / 2, 800 / 2 + 100 + (index * 50), `${score.name} - ${score.score}`).setOrigin(0.5, 0.5).setColor("#ffffff").setFontSize(20).setFontFamily("'Press Start 2P'").setDepth(1002).setAlpha(0);
       this._highScoresTexts.push(_text);
     });
 
@@ -254,6 +291,7 @@ export default class Intro extends Phaser.Scene {
 
   update(time: number, delta: number): void {
 
+    //se la classifica è stata caricata
     if (this._leaderBoard.isLoaded()) {
 
       //aumento il counter

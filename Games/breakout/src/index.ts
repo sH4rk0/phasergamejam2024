@@ -1,5 +1,7 @@
 //importiamo la libreria phaser
 import "phaser";
+//imoprtiamo il plugin rexUI
+import UIPlugin from 'phaser3-rex-plugins/templates/ui/ui-plugin.js';
 //importiamo le nostre scene
 import Boot from "./scenes/Boot";
 import Hud from "./scenes/Hud";
@@ -43,8 +45,16 @@ window.addEventListener("load", () => {
       default: "arcade",
       arcade: {
         debug: GameData.globals.debug,
-        gravity: { y: 0 },
+
       }
+    },
+    //aggiungiamo il plugin rexUI alla lista dei plugin
+    plugins: {
+      scene: [{
+        key: 'rexUI',
+        plugin: UIPlugin,
+        mapping: 'rexUI'
+      }]
     },
 
     input: {

@@ -1,0 +1,8 @@
+{
+  "rules": {
+     "highscores": {
+      ".read": true,
+      ".write": "auth != null"
+    }
+  }
+}

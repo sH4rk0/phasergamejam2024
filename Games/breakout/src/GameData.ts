@@ -227,6 +227,7 @@ export let GameData: gameData = {
     { name: "balls", path: "assets/images/balls.png", width: 22, height: 22, frames: 2 },
     { name: "enemies", path: "assets/images/enemies.png", width: 44, height: 44, frames: 150 },
     { name: "explosion", path: "assets/images/explosion.png", width: 64, height: 64, frames: 25 },
+    { name: "notes", path: "assets/images/notes.png", width: 10, height: 13, frames: 4 },
     {
       name: "robo-player",
       path: "assets/images/robo-player.png",
@@ -265,9 +266,13 @@ export let GameData: gameData = {
     { name: "patter", path: "assets/images/pattern.jpg" },
     { name: "patter-front", path: "assets/images/pattern-front.png" },
     { name: "patter-back", path: "assets/images/pattern-back.png" },
+    { name: "audiobtn", path: "assets/images/audiobtn.png" },
 
     /* */
     { name: "phaser", path: "assets/images/logo-phaser.png" },
+    { name: "rub", path: "assets/images/rub.png" },
+    { name: "end", path: "assets/images/end.png" },
+    { name: "block", path: "assets/images/block.png" },
 
 
 
@@ -298,5 +303,5 @@ export let GameData: gameData = {
 
   scripts: [],
   fonts: [{ key: 'Roboto' }, { key: 'Press+Start+2P' }],
-  bitmapfonts: [],
+  bitmapfonts: [{ name: 'arcade', imgpath: 'assets/fonts/arcade.png', xmlpath: 'assets/fonts/arcade.xml' }],
 };
